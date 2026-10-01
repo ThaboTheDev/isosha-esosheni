@@ -335,7 +335,7 @@ class _HouseholdScreenState extends State<HouseholdScreen> {
 
   Future<void> _consent(bool give) async {
     try {
-      await context.read(householdsRepoProvider).respondHouseholdConsent(
+      await context.read(householdsRepoProvider).respondConsent(
           (_data!.household?['id'] as String?) ?? '', give);
       _load();
     } catch (e) {
