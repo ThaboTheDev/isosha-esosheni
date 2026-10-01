@@ -18,7 +18,7 @@ the server returns.
 ## 1. Requirements
 
 - Flutter **3.22+** (Dart **3.4+**)
-- Android: minSdk 24, compileSdk 36, AGP 8.9.1 (bundled wrapper)
+- Android: minSdk 24, compileSdk 36, AGP 8.9.1, Gradle wrapper 8.11.1 (both pinned in-repo)
 - iOS: Xcode 15+, run `pod install` inside `ios/` after checkout
 
 ## 2. Configuration (compile-time `--dart-define`)
@@ -154,7 +154,7 @@ rendered colours are mapped through the palette.
 | Account deletion | See store-compliance note above. |
 | Administration | Staff see a single *"Administration is available on the web"* row that opens `WEB_BASE_URL/admin` in the system browser. Admin is intentionally not built in mobile. |
 | iOS Associated Domains | Must be added in Xcode before release builds. |
-| Gradle wrapper | The Android wrapper (`gradlew`, `gradlew.bat`, `gradle-wrapper.jar` for Gradle 8.11.1) is checked in; no extra setup needed. |
+| Gradle wrapper | The Android wrapper (`gradlew`, `gradlew.bat`, `gradle-wrapper.jar` for Gradle 8.11.1) is checked in; no extra setup needed. Gradle 8.11.1 is the **minimum** for AGP 8.9.1 — if a build fails with *"Minimum supported Gradle version is 8.11.1. Current version is 8.9"*, the wrapper was downgraded (Android Studio rewrites `gradle-wrapper.properties` when Gradle is set to run from a *specified location* — keep it on *"gradle-wrapper.properties (default)"*). Restore `distributionUrl` to `gradle-8.11.1-all.zip`, or re-pull. |
 
 ## 10. Assumptions
 
