@@ -114,6 +114,7 @@ class RelationshipState {
     this.pausedBy,
     this.householdNote,
     this.householdOnHold = false,
+    this.consultationStatus,
   });
 
   final String id;
@@ -129,6 +130,7 @@ class RelationshipState {
   final String? pausedBy;
   final String? householdNote;
   final bool householdOnHold;
+  final String? consultationStatus;
 
   static RelationshipState fromJson(Map<String, dynamic> m) {
     final partner = mapV(m, 'partner');
@@ -148,6 +150,7 @@ class RelationshipState {
       householdNote: str(m, 'household_note'),
       householdOnHold: str(m, 'reason') == 'household_inactive' ||
           boolV(m, 'household_on_hold'),
+      consultationStatus: str(m, 'consultation_status'),
     );
   }
 }

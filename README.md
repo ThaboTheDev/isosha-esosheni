@@ -168,3 +168,5 @@ rendered colours are mapped through the palette.
   are never shipped as credentials.
 - Localization: English (en-ZA) only for v1; copy lives in `lib/core/l10n/strings.dart` with an
   ARB mirror in `lib/l10n/app_en_ZA.arb` for future `gen-l10n`.
+- `flutter_svg` was listed in the brief but is omitted: no SVG assets exist (the crest ships as
+  PNG), so the dependency would be dead weight.

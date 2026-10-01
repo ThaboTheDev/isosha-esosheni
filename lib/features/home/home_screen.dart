@@ -14,6 +14,8 @@ import '../../core/widgets/loading.dart';
 import '../../core/widgets/member_card.dart';
 import '../../core/widgets/panel.dart';
 import '../../data/models/member.dart';
+import '../../data/models/relationship.dart';
+import '../../data/repositories/relationships_repo.dart';
 
 class HomeScreen extends ConsumerStatefulWidget {
   const HomeScreen({super.key});
@@ -189,17 +191,16 @@ class _StatusPanel extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final me = ref.watch(sessionProvider).me;
     final summary = ref.watch(matchSummaryProvider).valueOrNull;
-    final backend = ref.read(backendProvider);
-    return FutureBuilder<Map<String, dynamic>>(
-      future: backend.rpc('my_relationships').then(
-          (v) => Map<String, dynamic>.from(v as Map? ?? {})),
+    final repo = RelationshipsRepository(ref.read(backendProvider));
+    return FutureBuilder<RelationshipsResult>(
+      future: repo.myRelationships(),
       builder: (ctx, relSnap) {
         final rel = relSnap.data;
         return Panel(
           padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 6),
           child: Column(
             children: [
-              _row('Relationship status', maritalText(rel), () => context.go('/relationships')),
+              _row('Relationship status', maritalText(rel?.maritalStatus), () => context.go('/relationships')),
               _row(
                 'Looking for',
                 (me?.relationshipIntentions.isNotEmpty == true)
@@ -209,16 +210,14 @@ class _StatusPanel extends ConsumerWidget {
               ),
               _row(
                 'Interest waiting for you',
-                ((summary?['interests_received'] as num?)?.toInt() ?? 0) > 0
-                    ? '${summary!['interests_received']}'
+                (summary?.interestsReceived ?? 0) > 0
+                    ? '${summary!.interestsReceived}'
                     : 'None',
                 () => context.go('/connections'),
               ),
               _row(
                 'Matches',
-                ((summary?['matches'] as num?)?.toInt() ?? 0) > 0
-                    ? '${summary!['matches']}'
-                    : 'None yet',
+                (summary?.matches ?? 0) > 0 ? '${summary!.matches}' : 'None yet',
                 () => context.go('/connections?tab=matches'),
               ),
               if ((me?.maritalStatus ?? '') == 'married')
@@ -232,8 +231,7 @@ class _StatusPanel extends ConsumerWidget {
     );
   }
 
-  String maritalText(Map<String, dynamic>? rel) {
-    final s = rel?['marital_status'] as String?;
+  String maritalText(String? s) {
     const labels = {
       'single': 'Single',
       'separated': 'Separated',
@@ -247,13 +245,10 @@ class _StatusPanel extends ConsumerWidget {
     return s == null ? 'Single' : (labels[s] ?? s);
   }
 
-  String _consultationText(Map<String, dynamic>? rel) {
-    final active = (rel?['active'] as List? ?? [])
-        .whereType<Map>()
-        .map((e) => Map<String, dynamic>.from(e))
-        .toList();
+  String _consultationText(RelationshipsResult? rel) {
+    final active = rel?.active ?? const <RelationshipState>[];
     if (active.isEmpty) return 'No consultation in progress';
-    final st = active.first['consultation_status'] as String?;
+    final st = active.first.consultationStatus;
     switch (st) {
       case 'awaiting_partner':
         return 'A request is waiting for your confirmation';

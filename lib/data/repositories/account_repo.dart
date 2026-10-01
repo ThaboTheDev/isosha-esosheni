@@ -37,6 +37,20 @@ class AccountRepository {
     return rows.isEmpty ? null : PartnerPreferences.fromJson(rows.first);
   }
 
+  Future<List<Map<String, dynamic>>> myAnnouncements() async {
+    final res = await _b.rpc('my_announcements');
+    if (res is List) {
+      return res
+          .whereType<Map>()
+          .map((e) => Map<String, dynamic>.from(e))
+          .toList();
+    }
+    return const [];
+  }
+
+  Future<void> dismissAnnouncement(String id) =>
+      _b.rpc('dismiss_announcement', params: {'ann': id});
+
   Future<void> savePreferences(PartnerPreferences p, String userId) =>
       _b.upsert('partner_preferences', {...p.toJson(), 'user_id': userId});
 

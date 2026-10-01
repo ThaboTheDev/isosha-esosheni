@@ -77,18 +77,21 @@ class LiveNowItem {
     required this.sessionId,
     required this.title,
     this.conferenceTitle,
+    this.conferenceId,
     this.registered = false,
   });
 
   final String sessionId;
   final String title;
   final String? conferenceTitle;
+  final String? conferenceId;
   final bool registered;
 
   static LiveNowItem fromJson(Map<String, dynamic> m) => LiveNowItem(
         sessionId: str(m, 'session_id') ?? str(m, 'id') ?? '',
         title: str(m, 'title') ?? 'Live session',
         conferenceTitle: str(m, 'conference_title') ?? str(m, 'conference'),
+        conferenceId: str(m, 'conference_id'),
         registered: boolV(m, 'registered'),
       );
 }

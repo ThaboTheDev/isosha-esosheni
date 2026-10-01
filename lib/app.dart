@@ -6,6 +6,8 @@ import 'core/router.dart';
 import 'core/theme/theme.dart';
 import 'core/widgets/announcement_dialog.dart';
 import 'data/models/misc.dart';
+import 'data/repositories/account_repo.dart';
+import 'data/repositories/safety_repo.dart';
 
 class IsoshaApp extends ConsumerStatefulWidget {
   const IsoshaApp({super.key});
@@ -42,7 +44,7 @@ class _IsoshaAppState extends ConsumerState<IsoshaApp>
     final backend = ref.read(backendProvider);
     if (!backend.signedIn) return;
     try {
-      await backend.rpc('expire_my_sanctions');
+      await SafetyRepository(backend).expireSanctions();
     } catch (_) {}
     ref.invalidate(announcementsProvider);
     ref.invalidate(liveNowProvider);
@@ -74,10 +76,10 @@ class _IsoshaAppState extends ConsumerState<IsoshaApp>
       hasNext: _queue.isNotEmpty,
       onDismiss: () {
         Navigator.of(context).pop();
-        ref
-            .read(backendProvider)
-            .rpc('dismiss_announcement', params: {'ann': a.id})
-            .catchError((_) => null);
+        AccountRepository(
+          ref.read(backendProvider),
+          ref.read(signedUrlCacheProvider),
+        ).dismissAnnouncement(a.id).catchError((_) => null);
         ref.invalidate(announcementsProvider);
         _showNext();
       },

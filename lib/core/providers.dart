@@ -4,8 +4,13 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../data/backend/backend.dart';
+import '../data/models/member.dart';
+import '../data/models/misc.dart';
 import '../data/models/profile.dart';
 import '../data/repositories/account_repo.dart';
+import '../data/repositories/conferences_repo.dart';
+import '../data/repositories/discovery_repo.dart';
+import '../data/repositories/messaging_repo.dart';
 import '../core/utils/signed_url_cache.dart';
 
 /// The one seam between UI and data. Overridden in main.dart.
@@ -130,32 +135,26 @@ final unreadNotificationsProvider =
     FutureProvider.autoDispose<int>((ref) async {
   final backend = ref.watch(backendProvider);
   if (!backend.signedIn) return 0;
-  final rows = await backend.select('notifications', limit: 200);
-  return rows.where((n) => n['read_at'] == null).length;
+  final rows =
+      await MessagingRepository(backend, ref.watch(signedUrlCacheProvider))
+          .notifications(limit: 200);
+  return rows.where((n) => n.unread).length;
 });
 
 /// Match summary for the bottom-bar badges.
 final matchSummaryProvider =
-    FutureProvider.autoDispose<Map<String, dynamic>>((ref) async {
+    FutureProvider.autoDispose<MatchSummary>((ref) async {
   final backend = ref.watch(backendProvider);
-  if (!backend.signedIn) return const {};
-  final res = await backend.rpc('my_match_summary');
-  return res is Map ? Map<String, dynamic>.from(res) : const {};
+  if (!backend.signedIn) return const MatchSummary();
+  return DiscoveryRepository(backend).matchSummary();
 });
 
 /// The bronze "Live now" bar data.
 final liveNowProvider =
-    FutureProvider.autoDispose<List<Map<String, dynamic>>>((ref) async {
+    FutureProvider.autoDispose<List<LiveNowItem>>((ref) async {
   final backend = ref.watch(backendProvider);
   if (!backend.signedIn) return const [];
-  final res = await backend.rpc('live_now');
-  if (res is List) {
-    return res
-        .whereType<Map>()
-        .map((e) => Map<String, dynamic>.from(e))
-        .toList();
-  }
-  return const [];
+  return ConferencesRepository(backend).liveNow();
 });
 
 /// Announcements to display as pop-ups.
@@ -163,14 +162,8 @@ final announcementsProvider =
     FutureProvider.autoDispose<List<Map<String, dynamic>>>((ref) async {
   final backend = ref.watch(backendProvider);
   if (!backend.signedIn) return const [];
-  final res = await backend.rpc('my_announcements');
-  if (res is List) {
-    return res
-        .whereType<Map>()
-        .map((e) => Map<String, dynamic>.from(e))
-        .toList();
-  }
-  return const [];
+  return AccountRepository(backend, ref.watch(signedUrlCacheProvider))
+      .myAnnouncements();
 });
 
 /// Permission set for role gating (consultant area, admin link, speakers).
@@ -178,7 +171,6 @@ final permissionsProvider =
     FutureProvider.autoDispose<List<String>>((ref) async {
   final backend = ref.watch(backendProvider);
   if (!backend.signedIn) return const [];
-  final res = await backend.rpc('my_permissions');
-  if (res is List) return res.whereType<String>().toList();
-  return const [];
+  return AccountRepository(backend, ref.watch(signedUrlCacheProvider))
+      .permissions();
 });

@@ -5,6 +5,7 @@ import 'package:url_launcher/url_launcher.dart';
 
 import '../../core/config.dart';
 import '../../core/providers.dart';
+import '../../data/models/misc.dart';
 import '../theme/colors.dart';
 import '../theme/theme.dart';
 import 'avatar.dart';
@@ -255,7 +256,7 @@ class LiveBar extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final live = ref.watch(liveNowProvider);
-    final items = live.valueOrNull ?? const <Map<String, dynamic>>[];
+    final items = live.valueOrNull ?? const <LiveNowItem>[];
     if (items.isEmpty) return const SizedBox.shrink();
     final first = items.first;
     final more = items.length - 1;
@@ -263,7 +264,7 @@ class LiveBar extends ConsumerWidget {
       decoration: const BoxDecoration(gradient: C.liveBar),
       child: InkWell(
         onTap: () => context.go(
-            '/conferences/${first['conference_id'] ?? ''}/live/${first['session_id'] ?? first['id']}'),
+            '/conferences/${first.conferenceId ?? ''}/live/${first.sessionId}'),
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 9),
           child: Row(
@@ -279,8 +280,8 @@ class LiveBar extends ConsumerWidget {
               const SizedBox(width: 8),
               Expanded(
                 child: Text(
-                  'Live now: ${first['title'] ?? 'A session'}'
-                  '${first['conference_title'] != null ? ', ${first['conference_title']}' : ''}'
+                  'Live now: ${first.title}'
+                  '${first.conferenceTitle != null ? ', ${first.conferenceTitle}' : ''}'
                   '${more > 0 ? ' and $more more' : ''}',
                   style: const TextStyle(
                     color: Colors.white,

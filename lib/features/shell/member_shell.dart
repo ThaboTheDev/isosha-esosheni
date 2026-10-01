@@ -28,7 +28,7 @@ class MemberShell extends ConsumerWidget {
     final session = ref.watch(sessionProvider);
     final matches = ref.watch(matchSummaryProvider).valueOrNull;
     final unread = ref.watch(unreadNotificationsProvider).valueOrNull ?? 0;
-    final received = (matches?['interests_received'] as num?)?.toInt() ?? 0;
+    final received = matches?.interestsReceived ?? 0;
 
     return Scaffold(
       appBar: const BrandHeader(),

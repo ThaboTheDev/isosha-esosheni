@@ -818,6 +818,7 @@ class FakeBackend implements Backend {
         return [
           {
             'session_id': 'sess-1',
+            'conference_id': 'conf-1',
             'title': 'Opening word: relationships with purpose',
             'conference_title': 'Love Life Conference 2026',
             'registered': true,
