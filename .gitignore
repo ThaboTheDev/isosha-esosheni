@@ -31,7 +31,6 @@ ios/Runner/GeneratedPluginRegistrant.*
 # Android
 android/.gradle/
 android/captures/
-android/gradlew.bat
 android/local.properties
 android/**/GeneratedPluginRegistrant.java
 android/key.properties
