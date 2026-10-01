@@ -1,0 +1,49 @@
+# Flutter / Dart
+.dart_tool/
+.packages
+build/
+coverage/
+.flutter-plugins
+.flutter-plugins-dependencies
+.metadata
+pubspec.lock
+
+# Generated
+*.g.dart
+*.freezed.dart
+generated_plugin_registrant.dart
+
+# iOS
+ios/Pods/
+ios/.symlinks/
+ios/Flutter/App.framework
+ios/Flutter/Flutter.framework
+ios/Flutter/Generated.xcconfig
+ios/Flutter/app.flx
+ios/Flutter/app.zip
+ios/Flutter/flutter_assets/
+ios/Flutter/ephemeral/
+ios/ServiceDefinitions.json
+ios/Runner/GeneratedPluginRegistrant.*
+**/xcuserdata/
+**/.DS_Store
+
+# Android
+android/.gradle/
+android/captures/
+android/gradlew.bat
+android/local.properties
+android/**/GeneratedPluginRegistrant.java
+android/key.properties
+*.jks
+
+# IDE / OS
+.idea/
+*.iml
+.vscode/
+.DS_Store
+
+# Environment / secrets — never commit real credentials
+.env
+.env.*
+!.env.example
