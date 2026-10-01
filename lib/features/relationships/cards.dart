@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../core/providers.dart';
 import '../../core/repos.dart';
@@ -124,7 +123,7 @@ class _RelationshipCardState extends State<RelationshipCard> {
                   ),
                   const SizedBox(height: 10),
                   DropdownButtonFormField<String>(
-                    initialValue: marriageType,
+                    value: marriageType,
                     items: [
                       for (final e in marriageTypes.entries)
                         DropdownMenuItem(value: e.key, child: Text(e.value)),
@@ -394,7 +393,7 @@ class _ConsultationCardState extends State<ConsultationCard> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               DropdownButtonFormField<String>(
-                initialValue: mode,
+                value: mode,
                 items: const [
                   DropdownMenuItem(value: 'in_person', child: Text('In person')),
                   DropdownMenuItem(value: 'video', child: Text('Video call')),

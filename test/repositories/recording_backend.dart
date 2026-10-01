@@ -11,9 +11,11 @@ class RecordingBackend implements Backend {
   final FakeBackend inner;
   final List<RecordedRpc> calls = [];
 
-  List<String> paramKeys(String fn) =>
-      calls.where((c) => c.fn == fn).map((c) {
-        return (c.params?.keys.toList()..sort()).join(',');
+  List<String> paramKeys(String fn) => calls
+      .where((c) => c.fn == fn)
+      .map((c) {
+        final keys = c.params?.keys.toList()..sort();
+        return keys?.join(',') ?? '';
       }).toList();
 
   @override

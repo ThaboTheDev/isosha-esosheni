@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../core/repos.dart';
@@ -12,6 +11,7 @@ import '../../core/widgets/member_card.dart';
 import '../../core/widgets/panel.dart';
 import '../../data/models/member.dart';
 import '../../data/repositories/discovery_repo.dart';
+import '../../core/providers.dart';
 
 class ConnectionsScreen extends StatefulWidget {
   const ConnectionsScreen({super.key, this.initialTab});

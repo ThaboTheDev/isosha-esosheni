@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../core/repos.dart';
@@ -10,7 +9,9 @@ import '../../core/utils/errors.dart';
 import '../../core/utils/safe_next.dart';
 import '../../core/widgets/brand_header.dart';
 import '../../core/widgets/loading.dart';
+import '../../core/widgets/panel.dart';
 import '../../data/models/misc.dart';
+import '../../core/providers.dart';
 
 class NotificationsScreen extends StatefulWidget {
   const NotificationsScreen({super.key});

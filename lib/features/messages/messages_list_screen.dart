@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../core/providers.dart';
@@ -60,9 +59,9 @@ class _MessagesListScreenState extends State<MessagesListScreen> {
   Widget build(BuildContext context) {
     if (_error != null) return ErrorView(message: _error!, onRetry: _load);
     if (_rows == null) {
-      return const ListView(
-        padding: EdgeInsets.all(16),
-        children: [SkeletonList()],
+      return ListView(
+        padding: const EdgeInsets.all(16),
+        children: const [SkeletonList()],
       );
     }
     final open = _rows!.where((c) => !c.closed).toList();

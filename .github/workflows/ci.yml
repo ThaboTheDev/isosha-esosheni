@@ -44,7 +44,7 @@ jobs:
           {
             echo "**flutter analyze log** (run $GITHUB_RUN_ID)"
             echo '```'
-            tail -n 120 analyze-ci.log
+            cat analyze-ci.log
             echo '```'
           } > /tmp/comment.md
           gh pr comment "$NUM" --body-file /tmp/comment.md

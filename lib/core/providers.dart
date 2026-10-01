@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/foundation.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../data/backend/backend.dart';
@@ -174,3 +175,9 @@ final permissionsProvider =
   return AccountRepository(backend, ref.watch(signedUrlCacheProvider))
       .permissions();
 });
+
+/// Riverpod 2 removed BuildContext.read; keep call sites terse.
+extension BuildContextRead on BuildContext {
+  T read<T>(ProviderListenable<T> provider) =>
+      ProviderScope.containerOf(this).read(provider);
+}

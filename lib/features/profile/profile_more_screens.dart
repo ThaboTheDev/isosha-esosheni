@@ -24,7 +24,7 @@ class ProfileMediaScreen extends ConsumerStatefulWidget {
   const ProfileMediaScreen({super.key});
 
   @override
-  State<ProfileMediaScreen> createState() => _ProfileMediaScreenState();
+  ConsumerState<ProfileMediaScreen> createState() => _ProfileMediaScreenState();
 }
 
 class _ProfileMediaScreenState extends ConsumerState<ProfileMediaScreen> {
@@ -383,7 +383,7 @@ class _PreferencesScreenState extends State<PreferencesScreen> {
             ],
           ),
           DropdownButtonFormField<String>(
-            initialValue: _gender,
+            value: _gender,
             items: const [
               DropdownMenuItem(value: 'female', child: Text('Female')),
               DropdownMenuItem(value: 'male', child: Text('Male')),

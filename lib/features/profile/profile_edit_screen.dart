@@ -61,7 +61,7 @@ class ProfileEditScreen extends ConsumerStatefulWidget {
   const ProfileEditScreen({super.key});
 
   @override
-  State<ProfileEditScreen> createState() => _ProfileEditScreenState();
+  ConsumerState<ProfileEditScreen> createState() => _ProfileEditScreenState();
 }
 
 class _ProfileEditScreenState extends ConsumerState<ProfileEditScreen> {
@@ -302,7 +302,7 @@ class _ProfileEditScreenState extends ConsumerState<ProfileEditScreen> {
             )
           else
             DropdownButtonFormField<String>(
-              initialValue: _marital,
+              value: _marital,
               items: [
                 const DropdownMenuItem(value: null, child: Text('Select')),
                 for (final s in selfMaritalStatuses)
@@ -338,7 +338,7 @@ class _ProfileEditScreenState extends ConsumerState<ProfileEditScreen> {
             ],
           ),
           DropdownButtonFormField<String>(
-            initialValue: _wantsChildren,
+            value: _wantsChildren,
             items: [
               const DropdownMenuItem(value: null, child: Text('Select')),
               for (final w in wantsChildrenOptions)
@@ -366,7 +366,7 @@ class _ProfileEditScreenState extends ConsumerState<ProfileEditScreen> {
           const SizedBox(height: 16),
           _section('Education and work'),
           DropdownButtonFormField<String>(
-            initialValue: me?.education,
+            value: me?.education,
             items: [
               const DropdownMenuItem(value: null, child: Text('Select')),
               for (final e in educationOptions)
@@ -377,7 +377,7 @@ class _ProfileEditScreenState extends ConsumerState<ProfileEditScreen> {
           ),
           const SizedBox(height: 10),
           DropdownButtonFormField<String>(
-            initialValue: me?.employmentStatus,
+            value: me?.employmentStatus,
             items: [
               const DropdownMenuItem(value: null, child: Text('Select')),
               for (final e in employmentOptions)
@@ -447,7 +447,7 @@ class _ProfileEditScreenState extends ConsumerState<ProfileEditScreen> {
           ),
           const SizedBox(height: 10),
           DropdownButtonFormField<String>(
-            initialValue: me?.province,
+            value: me?.province,
             items: [
               const DropdownMenuItem(value: null, child: Text('Select')),
               for (final p in provinces)
