@@ -5,6 +5,11 @@ on:
     branches: [main, "arena/**"]
   pull_request:
 
+permissions:
+  contents: read
+  pull-requests: write
+  checks: write
+
 jobs:
   analyze-and-test:
     name: flutter analyze + test
@@ -29,17 +34,22 @@ jobs:
           flutter analyze | tee analyze-ci.log
           exit "${PIPESTATUS[0]}"
 
-      # TEMPORARY debug hook: publish the analyzer log to the branch so it
-      # can be inspected from environments where Actions log storage is
+      # TEMPORARY debug hook: publish the analyzer log on the PR so it can
+      # be inspected from environments where Actions log storage is
       # unreachable. Remove once analyze is green.
       - name: Publish analyze log on failure
         if: steps.analyze.outcome == 'failure'
         run: |
-          git config user.name "ci-bot"
-          git config user.email "ci-bot@users.noreply.github.com"
-          git add analyze-ci.log
-          git commit -m "ci: analyze log [skip ci]"
-          git push origin "HEAD:$GITHUB_REF_NAME"
+          NUM=$(gh pr list --head "$GITHUB_REF_NAME" --state open --json number --jq '.[0].number')
+          {
+            echo "**flutter analyze log** (run $GITHUB_RUN_ID)"
+            echo '```'
+            tail -n 120 analyze-ci.log
+            echo '```'
+          } > /tmp/comment.md
+          gh pr comment "$NUM" --body-file /tmp/comment.md
+        env:
+          GH_TOKEN: ${{ github.token }}
 
       - name: Fail job if analysis failed
         if: steps.analyze.outcome == 'failure'
