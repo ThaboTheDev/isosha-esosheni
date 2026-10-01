@@ -203,7 +203,8 @@ class SupabaseBackend implements Backend {
     final factors = await listMfaFactors();
     if (!factors.any((f) => f.verified)) return false;
     final aal = _client.auth.mfa.getAuthenticatorAssuranceLevel();
-    return aal.nextLevel == 'aal2' && aal.currentLevel != 'aal2';
+    return aal.nextLevel == AuthenticatorAssuranceLevels.aal2 &&
+        aal.currentLevel != AuthenticatorAssuranceLevels.aal2;
   }
 
   @override
@@ -266,20 +267,27 @@ class SupabaseBackend implements Backend {
     String? filter,
     void Function(Map<String, dynamic>, Map<String, dynamic>) onEvent,
   ) {
-    final eventName = switch (event) {
-      WatchEvent.insert => 'INSERT',
-      WatchEvent.update => 'UPDATE',
-      WatchEvent.delete => 'DELETE',
-      WatchEvent.all => '*',
+    final type = switch (event) {
+      WatchEvent.insert => PostgresChangeEvent.insert,
+      WatchEvent.update => PostgresChangeEvent.update,
+      WatchEvent.delete => PostgresChangeEvent.delete,
+      WatchEvent.all => PostgresChangeEvent.all,
     };
     final channel = _client.channel('watch_$table$_watchSeq');
     _watchSeq++;
     channel
         .onPostgresChanges(
-          event: eventName,
+          event: type,
           schema: 'public',
           table: table,
-          filter: filter,
+          filter: filter == null
+              ? null
+              : PostgresChangeFilter(
+                  type: type,
+                  schema: 'public',
+                  table: table,
+                  filter: filter,
+                ),
           callback: (payload) {
             onEvent(
               Map<String, dynamic>.from(payload.newRecord),

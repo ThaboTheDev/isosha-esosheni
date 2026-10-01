@@ -42,12 +42,6 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
     try {
       final repo = context.read(discoveryRepoProvider);
       final recs = await repo.recommendations(lim: 3, off: 0);
-      List<Map<String, dynamic>> consult = const [];
-      try {
-        consult = await context
-            .read(backendProvider)
-            .select('consultation_requests');
-      } catch (_) {}
       if (!mounted) return;
       setState(() {
         _recs = recs;
