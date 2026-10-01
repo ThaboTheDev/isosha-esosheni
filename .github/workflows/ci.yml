@@ -47,7 +47,10 @@ jobs:
             cat analyze-ci.log
             echo '```'
           } > /tmp/comment.md
-          gh pr comment "$NUM" --body-file /tmp/comment.md
+          for attempt in 1 2 3; do
+            gh pr comment "$NUM" --body-file /tmp/comment.md && break
+            sleep 20
+          done
         env:
           GH_TOKEN: ${{ github.token }}
 
