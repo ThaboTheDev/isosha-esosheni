@@ -10,7 +10,7 @@ jobs:
     name: flutter analyze + test
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
 
       - uses: subosito/flutter-action@v2
         with:
@@ -23,7 +23,27 @@ jobs:
         run: flutter pub get
 
       - name: Static analysis (errors + warnings are fatal)
-        run: flutter analyze
+        id: analyze
+        continue-on-error: true
+        run: |
+          flutter analyze | tee analyze-ci.log
+          exit "${PIPESTATUS[0]}"
+
+      # TEMPORARY debug hook: publish the analyzer log to the branch so it
+      # can be inspected from environments where Actions log storage is
+      # unreachable. Remove once analyze is green.
+      - name: Publish analyze log on failure
+        if: steps.analyze.outcome == 'failure'
+        run: |
+          git config user.name "ci-bot"
+          git config user.email "ci-bot@users.noreply.github.com"
+          git add analyze-ci.log
+          git commit -m "ci: analyze log [skip ci]"
+          git push origin "HEAD:$GITHUB_REF_NAME"
+
+      - name: Fail job if analysis failed
+        if: steps.analyze.outcome == 'failure'
+        run: exit 1
 
       - name: Unit / widget / repository tests
         run: flutter test --reporter compact
