@@ -24,7 +24,7 @@ class Dates {
 
   static String fmt(DateTime utcInstant) {
     final d = toSast(utcInstant);
-    return DateFormat('d MMM yyyy, HH:mm', sastLocale).format(d);
+    return _sept(DateFormat('d MMM yyyy, HH:mm', sastLocale).format(d));
   }
 
   static String fmtDate(DateTime utcInstant) {
@@ -61,7 +61,7 @@ class Dates {
     if (hours < 24) return '$hours h ago';
     final days = hours ~/ 24;
     if (days < 8) return '$days d ago';
-    return DateFormat('d MMM yyyy', sastLocale).format(toSast(t));
+    return _sept(DateFormat('d MMM yyyy', sastLocale).format(toSast(t)));
   }
 
   /// List/row timestamps: time-of-day when today, else a short date.
@@ -72,8 +72,12 @@ class Dates {
         DateTime(d.year, d.month, d.day)) {
       return fmtTime(utcInstant);
     }
-    return DateFormat('d MMM', sastLocale).format(d);
+    return _sept(DateFormat('d MMM', sastLocale).format(d));
   }
+
+  /// Newer CLDR data abbreviates September as "Sept"; the web app renders
+  /// "Sep", so normalize for parity.
+  static String _sept(String s) => s.replaceAll('Sept', 'Sep');
 
   static String dateInput(DateTime d) {
     final m = d.month.toString().padLeft(2, '0');

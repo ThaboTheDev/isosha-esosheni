@@ -501,10 +501,11 @@ class FakeBackend implements Backend {
       case 'delete_message':
         final id = params['msg'] as String?;
         for (final m in _messages) {
-          if (m['id'] == id) m['deleted_at'] = _now();
+          if (m['id'] == id) {
+            m['deleted_at'] = _now();
+            _notify('messages', 'UPDATE', m);
+          }
         }
-        _notify('messages', 'UPDATE',
-            _messages.firstWhere((m) => m['id'] == id));
         return null;
       case 'report_member':
         return _uuid();
