@@ -273,6 +273,17 @@ class SupabaseBackend implements Backend {
       WatchEvent.delete => PostgresChangeEvent.delete,
       WatchEvent.all => PostgresChangeEvent.all,
     };
+    PostgresChangeFilter? pgFilter;
+    if (filter != null) {
+      final m = RegExp(r'^(\w+)=eq\.(.+)$').firstMatch(filter);
+      if (m != null) {
+        pgFilter = PostgresChangeFilter(
+          type: PostgresChangeFilterType.eq,
+          column: m.group(1)!,
+          value: m.group(2)!,
+        );
+      }
+    }
     final channel = _client.channel('watch_$table$_watchSeq');
     _watchSeq++;
     channel
@@ -280,14 +291,7 @@ class SupabaseBackend implements Backend {
           event: type,
           schema: 'public',
           table: table,
-          filter: filter == null
-              ? null
-              : PostgresChangeFilter(
-                  type: type,
-                  schema: 'public',
-                  table: table,
-                  filter: filter,
-                ),
+          filter: pgFilter,
           callback: (payload) {
             onEvent(
               Map<String, dynamic>.from(payload.newRecord),
