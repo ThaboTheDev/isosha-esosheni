@@ -14,8 +14,7 @@ class RecordingBackend implements Backend {
   List<String> paramKeys(String fn) => calls
       .where((c) => c.fn == fn)
       .map((c) {
-        final keys = c.params?.keys.toList()..sort();
-        return keys?.join(',') ?? '';
+        return (c.params?.keys.toList()?..sort())?.join(',') ?? '';
       }).toList();
 
   @override

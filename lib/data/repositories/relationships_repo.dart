@@ -74,7 +74,7 @@ class RelationshipsRepository {
   // Consultation (member side)
   Future<MyConsultation> myConsultation(String relId) async {
     final res = await _b.rpc('my_consultation', params: {'rel_id': relId});
-    return MyConsultation.fromJson(res as Map?);
+    return MyConsultation.fromJson((res as Map?)?.cast<String, dynamic>());
   }
 
   Future<String> requestConsultation(

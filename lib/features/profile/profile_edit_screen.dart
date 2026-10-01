@@ -295,7 +295,7 @@ class _ProfileEditScreenState extends ConsumerState<ProfileEditScreen> {
             Padding(
               padding: const EdgeInsets.only(bottom: 10),
               child: Text(
-                'Relationship status: ${me?.maritalStatus}. This is set by '
+                'Relationship status: ${me.maritalStatus}. This is set by '
                 'the relationship workflow.',
                 style: T.small.copyWith(fontSize: 12.5),
               ),

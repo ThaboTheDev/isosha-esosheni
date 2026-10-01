@@ -30,11 +30,12 @@ class SupabaseBackend implements Backend {
     var q = _client.from(table).select();
     equals?.forEach((k, v) => q = q.eq(k, v));
     lessThan?.forEach((k, v) => q = q.lt(k, v));
-    if (orderBy != null) q = q.order(orderBy, ascending: !descending);
-    if (limit != null) q = q.limit(limit);
-    final rows = await q;
+    PostgrestTransformBuilder<PostgrestList> t = q;
+    if (orderBy != null) t = t.order(orderBy, ascending: !descending);
+    if (limit != null) t = t.limit(limit);
+    final rows = await t;
     return List<Map<String, dynamic>>.from(
-      rows.map((e) => Map<String, dynamic>.from(e as Map)),
+      rows.map((e) => Map<String, dynamic>.from(e)),
     );
   }
 
@@ -65,7 +66,7 @@ class SupabaseBackend implements Backend {
 
   @override
   Future<void> delete(String table, Map<String, dynamic> equals) async {
-    var q = _client.from(table).delete();
+    PostgrestFilterBuilder<void> q = _client.from(table).delete();
     equals.forEach((k, v) => q = q.eq(k, v));
     await q;
   }
@@ -73,11 +74,10 @@ class SupabaseBackend implements Backend {
   // ---- Storage ----
   @override
   Future<String> signedUrl(String bucket, String path, int expiresIn) async {
-    final u = await _client.storage.from(bucket).createSignedUrl(
+    return await _client.storage.from(bucket).createSignedUrl(
           path,
           expiresIn,
         );
-    return u.signedURL;
   }
 
   @override
@@ -93,7 +93,7 @@ class SupabaseBackend implements Backend {
         );
     final out = <String, String>{};
     for (final s in list) {
-      if (s.error == null) out[s.path] = s.signedURL;
+      out[s.path] = s.signedUrl;
     }
     return out;
   }
@@ -266,28 +266,28 @@ class SupabaseBackend implements Backend {
     String? filter,
     void Function(Map<String, dynamic>, Map<String, dynamic>) onEvent,
   ) {
-    final type = switch (event) {
-      WatchEvent.insert => PostgresChangeType.insert,
-      WatchEvent.update => PostgresChangeType.update,
-      WatchEvent.delete => PostgresChangeType.delete,
-      WatchEvent.all => PostgresChangeType.all,
+    final eventName = switch (event) {
+      WatchEvent.insert => 'INSERT',
+      WatchEvent.update => 'UPDATE',
+      WatchEvent.delete => 'DELETE',
+      WatchEvent.all => '*',
     };
     final channel = _client.channel('watch_$table$_watchSeq');
     _watchSeq++;
-    channel.onPostgresChanges(
-      filter: PostgresChangeFilter(
-        type: type,
-        schema: 'public',
-        table: table,
-        filter: filter,
-      ),
-      callback: (payload) {
-        onEvent(
-          Map<String, dynamic>.from(payload.newRecord),
-          Map<String, dynamic>.from(payload.oldRecord),
-        );
-      },
-    ).subscribe();
+    channel
+        .onPostgresChanges(
+          event: eventName,
+          schema: 'public',
+          table: table,
+          filter: filter,
+          callback: (payload) {
+            onEvent(
+              Map<String, dynamic>.from(payload.newRecord),
+              Map<String, dynamic>.from(payload.oldRecord),
+            );
+          },
+        )
+        .subscribe();
     return () {
       unawaited(_client.removeChannel(channel));
     };

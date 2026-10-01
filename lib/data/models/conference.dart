@@ -65,7 +65,7 @@ class ConferenceSession {
         description: str(m, 'description'),
         startsAt: str(m, 'starts_at') ?? str(m, 'start_at'),
         endsAt: str(m, 'ends_at') ?? str(m, 'end_at'),
-        speaker: ConferenceSpeaker.fromJson(mapV(m, 'speaker')),
+        speaker: ConferenceSpeaker.fromJson(mapV(m, 'speaker') ?? const {}),
         liveUrl: str(m, 'live_url'),
         recordingUrl: str(m, 'recording_url'),
         questions:

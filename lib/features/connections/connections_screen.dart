@@ -168,9 +168,9 @@ class _ConnectionsScreenState extends State<ConnectionsScreen> {
           child: _error != null
               ? ErrorView(message: _error!, onRetry: _load)
               : _data == null
-                  ? const ListView(
-                      padding: EdgeInsets.all(16),
-                      children: [SkeletonList()],
+                  ? ListView(
+                      padding: const EdgeInsets.all(16),
+                      children: const [SkeletonList()],
                     )
                   : _body(),
         ),

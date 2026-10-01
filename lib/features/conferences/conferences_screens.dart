@@ -24,7 +24,7 @@ class ConferencesScreen extends ConsumerStatefulWidget {
   const ConferencesScreen({super.key});
 
   @override
-  State<ConferencesScreen> createState() => _ConferencesScreenState();
+  ConsumerState<ConferencesScreen> createState() => _ConferencesScreenState();
 }
 
 class _ConferencesScreenState extends ConsumerState<ConferencesScreen> {
@@ -102,7 +102,7 @@ class _ConferencesScreenState extends ConsumerState<ConferencesScreen> {
                                   if (c.startsAt != null)
                                     '${Dates.fmtDate(DateTime.parse(c.startsAt!))}'
                                         '${c.endsAt != null ? ' – ${Dates.fmtDate(DateTime.parse(c.endsAt!))}' : ''}',
-                                ].where((e) => e.isNotEmpty).join(' · '),
+                                ].where((e) => e != null && e.isNotEmpty).join(' · '),
                                 style: T.small,
                               ),
                               const SizedBox(height: 4),
@@ -633,14 +633,14 @@ class _LiveRoomScreenState extends State<LiveRoomScreen> {
       final id = MediaUrls.extractYouTubeId(room.url);
       if (id != null) {
         final ctl = WebViewController()
-          ..setJavaScriptMode(JavaScriptMode.unconditional)
+          ..setJavaScriptMode(JavaScriptMode.unrestricted)
           ..loadRequest(Uri.parse(MediaUrls.youTubeEmbedUrl(id)));
         setState(() => _webCtl = ctl);
       }
     } else if (room.kind == 'jitsi') {
       final name = context.read(sessionProvider).me?.fullName ?? 'Member';
       final ctl = WebViewController()
-        ..setJavaScriptMode(JavaScriptMode.unconditional)
+        ..setJavaScriptMode(JavaScriptMode.unrestricted)
         ..loadRequest(Uri.parse(
             MediaUrls.jitsiUrl(room.jitsiDomain ?? 'meet.jit.si', room.room ?? '', name)));
       setState(() => _webCtl = ctl);

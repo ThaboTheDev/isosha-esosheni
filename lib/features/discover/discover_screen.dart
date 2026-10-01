@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart';
 
 import '../../core/providers.dart';
 import '../../core/repos.dart';
+import '../../data/repositories/discovery_repo.dart';
 import '../../core/theme/colors.dart';
 import '../../core/theme/theme.dart';
 import '../../core/utils/errors.dart';
@@ -245,9 +246,9 @@ class _RecommendedTabState extends State<_RecommendedTab> {
   @override
   Widget build(BuildContext context) {
     if (_loading) {
-      return const ListView(
-        padding: EdgeInsets.all(16),
-        children: [SkeletonList(count: 3)],
+      return ListView(
+        padding: const EdgeInsets.all(16),
+        children: const [SkeletonList(count: 3)],
       );
     }
     if (_error != null) {
@@ -480,17 +481,17 @@ class _FilterSheetState extends State<_FilterSheet> {
   late final Map<String, dynamic> _f = Map.of(widget.initial);
   late int _minAge = (_f['age_min'] as int?) ?? 18;
   late int _maxAge = (_f['age_max'] as int?) ?? 99;
-  String? _province = _f['province'] as String?;
-  final _city = TextEditingController(text: _f['city'] as String? ?? '');
-  String? _lookingFor = _f['looking_for'] as String?;
-  final _profession =
+  late String? _province = _f['province'] as String?;
+  late final _city = TextEditingController(text: _f['city'] as String? ?? '');
+  late String? _lookingFor = _f['looking_for'] as String?;
+  late final _profession =
       TextEditingController(text: _f['profession'] as String? ?? '');
-  String? _education = _f['education'] as String?;
-  String? _language = _f['language'] as String?;
-  String? _wantsChildren = _f['wants_children'] as String?;
-  String? _hasChildren = _f['has_children'] as String?;
-  String? _status = _f['relationship_status'] as String?;
-  List<String> _tags = List<String>.from(_f['tags'] as List? ?? const []);
+  late String? _education = _f['education'] as String?;
+  late String? _language = _f['language'] as String?;
+  late String? _wantsChildren = _f['wants_children'] as String?;
+  late String? _hasChildren = _f['has_children'] as String?;
+  late String? _status = _f['relationship_status'] as String?;
+  late List<String> _tags = List<String>.from(_f['tags'] as List? ?? const []);
 
   @override
   void dispose() {
@@ -524,7 +525,7 @@ class _FilterSheetState extends State<_FilterSheet> {
     return Padding(
       padding: const EdgeInsets.only(bottom: 10),
       child: DropdownButtonFormField<T>(
-        initialValue: value,
+        value: value,
         items: [
           const DropdownMenuItem(value: null, child: Text('Any')),
           for (final v in values)
@@ -694,9 +695,9 @@ class _HouseholdsTabState extends State<_HouseholdsTab> {
   Widget build(BuildContext context) {
     if (_error != null) return ErrorView(message: _error!, onRetry: _load);
     if (_rows == null) {
-      return const ListView(
-        padding: EdgeInsets.all(16),
-        children: [SkeletonList()],
+      return ListView(
+        padding: const EdgeInsets.all(16),
+        children: const [SkeletonList()],
       );
     }
     return ListView(

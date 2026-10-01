@@ -13,7 +13,6 @@ String friendlyError(Object e) {
   if (e is AuthException) return e.message;
   if (e is StorageException) return e.message;
   if (e is TimeoutException || e is SocketException) return connectionMessage;
-  if (e is ClientException) return connectionMessage;
   final s = e.toString();
   if (s.contains('Failed host lookup') ||
       s.contains('Connection refused') ||

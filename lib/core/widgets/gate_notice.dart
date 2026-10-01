@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import '../../data/models/member.dart';
 import '../theme/colors.dart';
 import '../theme/theme.dart';
-import 'panel.dart';
 
 /// Discovery gate notices with the exact web wording.
 class GateNotice extends StatelessWidget {

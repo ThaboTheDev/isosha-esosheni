@@ -76,7 +76,7 @@ class S {
   String get errPasswordShort => 'At least 8 characters.';
   String get errPasswordMatch => 'Passwords do not match.';
   String get errRequired => 'This field is required.';
-  String get errMinLength => (String label, int n) =>
+  String errMinLength(String label, int n) =>
       '$label needs at least $n characters.';
   String get errWeakPassword =>
       'That password is too weak. Use at least 8 characters with letters and numbers.';

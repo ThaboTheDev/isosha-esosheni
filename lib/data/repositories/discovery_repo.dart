@@ -143,7 +143,8 @@ class DiscoveryRepository {
       ConnectionsResult.fromJson(await _b.rpc('my_connections'));
 
   Future<MatchSummary> matchSummary() async =>
-      MatchSummary.fromJson(await _b.rpc('my_match_summary') as Map?);
+      MatchSummary.fromJson(
+          (await _b.rpc('my_match_summary') as Map?)?.cast<String, dynamic>());
 
   Future<void> endMatch(String match) =>
       _b.rpc('end_match', params: {'match': match});

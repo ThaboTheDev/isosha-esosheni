@@ -2,7 +2,6 @@ import 'package:intl/intl.dart';
 
 /// All display times are Africa/Johannesburg (UTC+2, no daylight saving)
 /// with en-ZA formatting.
-library;
 
 class Dates {
   Dates._();

@@ -20,7 +20,7 @@ class PostDetailScreen extends ConsumerStatefulWidget {
   final String id;
 
   @override
-  State<PostDetailScreen> createState() => _PostDetailScreenState();
+  ConsumerState<PostDetailScreen> createState() => _PostDetailScreenState();
 }
 
 class _PostDetailScreenState extends ConsumerState<PostDetailScreen> {

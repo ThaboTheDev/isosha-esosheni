@@ -301,7 +301,7 @@ class LiveBar extends ConsumerWidget {
                   borderRadius: BorderRadius.circular(999),
                 ),
                 child: Text(
-                  (first['registered'] == true)
+                  (first.registered)
                       ? 'Join the live room'
                       : 'Register and join',
                   style: const TextStyle(

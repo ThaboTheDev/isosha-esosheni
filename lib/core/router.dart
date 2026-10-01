@@ -188,7 +188,7 @@ class WebPage extends StatefulWidget {
 
 class _WebPageState extends State<WebPage> {
   late final WebViewController _ctl = WebViewController()
-    ..setJavaScriptMode(JavaScriptMode.unconditional)
+    ..setJavaScriptMode(JavaScriptMode.unrestricted)
     ..loadRequest(Uri.parse(AppConfig.webBaseUrl + widget.path));
 
   @override

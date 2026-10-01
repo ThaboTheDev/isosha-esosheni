@@ -8,25 +8,23 @@ import '../../core/theme/colors.dart';
 import '../../core/theme/theme.dart';
 import '../../core/utils/completion.dart';
 import '../../core/utils/errors.dart';
-import '../../core/widgets/buttons.dart';
 import '../../core/widgets/completion_meter.dart';
 import '../../core/widgets/loading.dart';
 import '../../core/widgets/member_card.dart';
 import '../../core/widgets/panel.dart';
-import '../../data/models/member.dart';
 import '../../data/models/relationship.dart';
+import '../../data/repositories/discovery_repo.dart';
 import '../../data/repositories/relationships_repo.dart';
 
 class HomeScreen extends ConsumerStatefulWidget {
   const HomeScreen({super.key});
 
   @override
-  State<HomeScreen> createState() => _HomeScreenState();
+  ConsumerState<HomeScreen> createState() => _HomeScreenState();
 }
 
 class _HomeScreenState extends ConsumerState<HomeScreen> {
   RecommendationsResult? _recs;
-  Map<String, dynamic>? _consult;
   String? _recsError;
   bool _loadingRecs = true;
 
@@ -53,7 +51,6 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
       if (!mounted) return;
       setState(() {
         _recs = recs;
-        _consult = {'rows': consult};
         _loadingRecs = false;
       });
     } catch (e) {
@@ -74,7 +71,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
         ref.watch(appSettingsProvider('profile.min_completion_for_discovery'))
                 .valueOrNull as int? ??
             60;
-    final weights = context
+    final weights = ref
         .watch(appSettingsProvider('profile.completion_weights'))
         .valueOrNull as Map?;
     final hasPrefs =

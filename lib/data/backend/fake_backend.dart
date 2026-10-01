@@ -25,8 +25,6 @@ class FakeBackend implements Backend {
   final List<Map<String, dynamic>> _liveChat = [];
   final Map<String, Map<String, dynamic>> _settings = {};
   final Map<String, String> _storage = {};
-  final List<Map<String, dynamic>> _reactionsMsg = [];
-  final List<Map<String, dynamic>> _reactionsPost = [];
   final Map<String, dynamic> _partnerPrefs = {};
   final Map<String, Map<String, dynamic>> _visibility = {};
 
@@ -478,10 +476,11 @@ class FakeBackend implements Backend {
         _notify('messages', 'INSERT', m);
         // Demo partner reply for text messages.
         if (params['kind'] == 'text') {
+          final convId = params['conv'];
           unawaited(Future<void>.delayed(const Duration(seconds: 2), () {
             final reply = {
               'id': _uuid(),
-              'conversation_id': params['conv'],
+              'conversation_id': convId,
               'sender_id': 'u-1',
               'kind': 'text',
               'body': 'Thank you for sharing that. It means a lot.',
@@ -623,7 +622,7 @@ class FakeBackend implements Backend {
         final before = params['before'] as String?;
         var rows = _posts.toList();
         if (before != null) {
-          rows = rows.where((p) => (p['created_at'] as String) < before).toList();
+          rows = rows.where((p) => (p['created_at'] as String).compareTo(before) < 0).toList();
         }
         return {
           'rows': rows,
@@ -669,7 +668,7 @@ class FakeBackend implements Backend {
       case 'edit_post':
         return null;
       case 'delete_post':
-        _posts.removeWhere((p) => p['id'] == params['post']);
+        _posts.removeWhere((p) => p['id'] == params?['post']);
         return null;
       case 'add_comment':
         final c = {
@@ -683,7 +682,7 @@ class FakeBackend implements Backend {
         _comments.add(c);
         return c['id'];
       case 'delete_comment':
-        _comments.removeWhere((c) => c['id'] == params['comment']);
+        _comments.removeWhere((c) => c['id'] == params?['comment']);
         return null;
       case 'react_post':
         return null;
@@ -703,7 +702,7 @@ class FakeBackend implements Backend {
         _stories.add(s);
         return s['id'];
       case 'delete_story':
-        _stories.removeWhere((s) => s['id'] == params['story']);
+        _stories.removeWhere((s) => s['id'] == params?['story']);
         return null;
       case 'view_story':
         return null;
@@ -955,7 +954,7 @@ class FakeBackend implements Backend {
         var rows = _messages
             .where((m) => conv == null || m['conversation_id'] == conv)
             .where((m) =>
-                before == null || (m['created_at'] as String) < before)
+                before == null || (m['created_at'] as String).compareTo(before) < 0)
             .toList();
         rows.sort((a, b) =>
             (b['created_at'] as String).compareTo(a['created_at'] as String));

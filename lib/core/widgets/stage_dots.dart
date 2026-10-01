@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 
 import '../../data/models/relationship.dart';
 import '../theme/colors.dart';
-import '../theme/theme.dart';
 
 /// Progress dots over the six relationship stages.
 class StageDots extends StatelessWidget {

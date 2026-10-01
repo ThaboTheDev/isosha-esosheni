@@ -381,7 +381,7 @@ class _ConsultCaseScreenState extends State<ConsultCaseScreen> {
                 ),
               ),
               DropdownButtonFormField<String>(
-                initialValue: mode,
+                value: mode,
                 items: const [
                   DropdownMenuItem(value: 'in_person', child: Text('In person')),
                   DropdownMenuItem(value: 'video', child: Text('Video')),
@@ -437,7 +437,7 @@ class _ConsultCaseScreenState extends State<ConsultCaseScreen> {
             mainAxisSize: MainAxisSize.min,
             children: [
               DropdownButtonFormField<String>(
-                initialValue: st,
+                value: st,
                 items: const [
                   DropdownMenuItem(value: 'scheduled', child: Text('Scheduled')),
                   DropdownMenuItem(value: 'held', child: Text('Held')),

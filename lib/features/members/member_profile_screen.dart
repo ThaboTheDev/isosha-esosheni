@@ -24,7 +24,7 @@ class MemberProfileScreen extends ConsumerStatefulWidget {
   final String id;
 
   @override
-  State<MemberProfileScreen> createState() => _MemberProfileScreenState();
+  ConsumerState<MemberProfileScreen> createState() => _MemberProfileScreenState();
 }
 
 class _MemberProfileScreenState extends ConsumerState<MemberProfileScreen> {
@@ -143,7 +143,7 @@ class _MemberProfileScreenState extends ConsumerState<MemberProfileScreen> {
                       ),
                     MemberImage(
                       name: _data!.displayName,
-                      url: context
+                      url: ref
                           .watch(avatarUrlProvider(_data!.avatarPath))
                           .valueOrNull,
                       cacheKey: _data!.avatarPath,

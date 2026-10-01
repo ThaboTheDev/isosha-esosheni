@@ -10,6 +10,7 @@ import '../../core/repos.dart';
 import '../../core/theme/colors.dart';
 import '../../core/theme/theme.dart';
 import '../../core/utils/dates.dart';
+import '../../core/widgets/buttons.dart';
 import '../../core/utils/errors.dart';
 import '../../core/widgets/avatar.dart';
 import '../../core/widgets/loading.dart';
@@ -21,7 +22,7 @@ class CommunityScreen extends ConsumerStatefulWidget {
   const CommunityScreen({super.key});
 
   @override
-  State<CommunityScreen> createState() => _CommunityScreenState();
+  ConsumerState<CommunityScreen> createState() => _CommunityScreenState();
 }
 
 class _CommunityScreenState extends ConsumerState<CommunityScreen> {

@@ -243,6 +243,6 @@ class MyConsultation {
         eligibility: mapV(m, 'eligibility'),
         approvedStage: str(m, 'approved_stage'),
         approvedLabel: str(m, 'approved_label'),
-        request: ConsultationRequest.fromJson(mapV(m, 'request')),
+        request: ConsultationRequest.fromJson(mapV(m, 'request') ?? const {}),
       );
 }

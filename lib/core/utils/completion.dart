@@ -2,7 +2,6 @@ import '../../data/models/profile.dart';
 
 /// The client only computes the "Still missing" list; the percentage
 /// itself always comes from the database (`profiles.completion_percent`).
-library;
 
 class MissingSection {
   const MissingSection({

@@ -163,7 +163,7 @@ class _HouseholdScreenState extends State<HouseholdScreen> {
                 ),
                 const SizedBox(height: 10),
                 DropdownButtonFormField<String>(
-                  initialValue: _province,
+                  value: _province,
                   items: [
                     for (final p in provinces)
                       DropdownMenuItem(value: p, child: Text(p)),

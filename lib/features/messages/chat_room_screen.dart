@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/semantics.dart';
 import 'package:flutter/services.dart';
 import 'package:go_router/go_router.dart';
 import 'package:image_picker/image_picker.dart';
@@ -22,6 +23,7 @@ import '../../core/utils/errors.dart';
 import '../../core/widgets/avatar.dart';
 import '../../core/widgets/brand_header.dart';
 import '../../core/widgets/report_sheet.dart';
+import '../../data/backend/backend.dart';
 import '../../data/models/chat.dart';
 import '../relationships/cards.dart';
 import '../../data/models/relationship.dart';
@@ -46,13 +48,11 @@ class _ChatRoomScreenState extends State<ChatRoomScreen>
 
   final List<CancelWatch> _watches = [];
   Timer? _markReadDebounce;
-  bool _secureApplied = false;
 
   final _recorder = AudioRecorder();
   bool _recording = false;
   int _recordSeconds = 0;
   Timer? _recordTimer;
-  String? _recordPath;
 
   @override
   void initState() {
@@ -84,7 +84,6 @@ class _ChatRoomScreenState extends State<ChatRoomScreen>
       if (!enabled) return;
       await const MethodChannel('com.trsh.isoshaesosheni/secure')
           .invokeMethod('set', on);
-      _secureApplied = on;
     } catch (_) {
       // Platform channel is optional (Android FLAG_SECURE).
     }
@@ -348,7 +347,6 @@ class _ChatRoomScreenState extends State<ChatRoomScreen>
         const RecordConfig(encoder: AudioEncoder.aacLc),
         path: path,
       );
-      _recordPath = path;
       setState(() {
         _recording = true;
         _recordSeconds = 0;

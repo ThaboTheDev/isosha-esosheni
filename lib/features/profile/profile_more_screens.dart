@@ -481,7 +481,6 @@ class PrivacyScreen extends StatefulWidget {
 
 class _PrivacyScreenState extends State<PrivacyScreen> {
   List<FieldVisibility>? _rows;
-  String? _error;
 
   @override
   void initState() {
@@ -493,8 +492,8 @@ class _PrivacyScreenState extends State<PrivacyScreen> {
     try {
       final rows = await context.read(accountRepoProvider).fieldVisibility();
       if (mounted) setState(() => _rows = rows);
-    } catch (e) {
-      if (mounted) setState(() => _error = friendlyError(e));
+    } catch (_) {
+      if (mounted) setState(() {});
     }
   }
 

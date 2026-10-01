@@ -7,7 +7,7 @@ class SafetyRepository {
 
   Future<Standing> standing() async {
     final res = await _b.rpc('my_standing');
-    return Standing.fromJson(res as Map?);
+    return Standing.fromJson((res as Map?)?.cast<String, dynamic>());
   }
 
   Future<String> submitAppeal(String sanction, String statement) async =>
