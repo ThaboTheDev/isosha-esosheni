@@ -135,7 +135,7 @@ ThemeData buildAppTheme() {
     snackBarTheme: const SnackBarThemeData(
       behavior: SnackBarBehavior.floating,
     ),
-    dialogTheme: DialogTheme(
+    dialogTheme: DialogThemeData(
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
     ),
     bottomSheetTheme: const BottomSheetThemeData(

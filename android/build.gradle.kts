@@ -19,6 +19,11 @@ subprojects {
     project.evaluationDependsOn(":app")
 }
 
+tasks.named<org.gradle.api.tasks.wrapper.Wrapper>("wrapper") {
+    gradleVersion = "8.11.1"
+    distributionType = org.gradle.api.tasks.wrapper.Wrapper.DistributionType.ALL
+}
+
 tasks.register<Delete>("clean") {
     delete(rootProject.layout.buildDirectory)
 }
