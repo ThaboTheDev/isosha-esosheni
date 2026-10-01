@@ -124,4 +124,13 @@ abstract final class C {
         return storyNight;
     }
   }
+
+  /// Soft elevation for panels: ink at low alpha (calm, no drop-shadow grey).
+  static List<BoxShadow> panelShadow() => [
+        BoxShadow(
+          color: ink.withOpacity(0.08),
+          blurRadius: 14,
+          offset: const Offset(0, 4),
+        ),
+      ];
 }

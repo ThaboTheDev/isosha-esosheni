@@ -154,7 +154,7 @@ rendered colours are mapped through the palette.
 | Account deletion | See store-compliance note above. |
 | Administration | Staff see a single *"Administration is available on the web"* row that opens `WEB_BASE_URL/admin` in the system browser. Admin is intentionally not built in mobile. |
 | iOS Associated Domains | Must be added in Xcode before release builds. |
-| Gradle wrapper jar | Android build uses the wrapper config; run `gradle wrapper` once if the jar is missing on your machine. |
+| Gradle wrapper | The Android wrapper (`gradlew`, `gradlew.bat`, `gradle-wrapper.jar` for Gradle 8.11.1) is checked in; no extra setup needed. |
 
 ## 10. Assumptions
 

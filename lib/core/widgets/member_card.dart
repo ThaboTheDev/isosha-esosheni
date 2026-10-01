@@ -16,6 +16,7 @@ class MemberCard extends StatelessWidget {
     super.key,
     required this.data,
     this.variant = CardActionVariant.discover,
+    this.avatarUrl,
     this.onSendInterest,
     this.onLike,
     this.onSave,
