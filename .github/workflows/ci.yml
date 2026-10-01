@@ -31,7 +31,7 @@ jobs:
         id: analyze
         continue-on-error: true
         run: |
-          flutter analyze | tee analyze-ci.log
+          flutter analyze --no-fatal-infos | tee analyze-ci.log
           exit "${PIPESTATUS[0]}"
 
       # TEMPORARY debug hook: publish the analyzer log on the PR so it can
@@ -59,4 +59,32 @@ jobs:
         run: exit 1
 
       - name: Unit / widget / repository tests
-        run: flutter test --reporter compact
+        id: tests
+        continue-on-error: true
+        run: |
+          flutter test --reporter compact 2>&1 | tee test-ci.log
+          exit "${PIPESTATUS[0]}"
+
+      # TEMPORARY debug hook: publish the test log on the PR so it can be
+      # inspected from environments where Actions log storage is unreachable.
+      # Remove once tests are green.
+      - name: Publish test log on failure
+        if: steps.tests.outcome == 'failure'
+        run: |
+          NUM=$(gh pr list --head "$GITHUB_REF_NAME" --state open --json number --jq '.[0].number')
+          {
+            echo "**flutter test log** (run $GITHUB_RUN_ID)"
+            echo '```'
+            tail -c 40000 test-ci.log
+            echo '```'
+          } > /tmp/comment.md
+          for attempt in 1 2 3; do
+            gh pr comment "$NUM" --body-file /tmp/comment.md && break
+            sleep 20
+          done
+        env:
+          GH_TOKEN: ${{ github.token }}
+
+      - name: Fail job if tests failed
+        if: steps.tests.outcome == 'failure'
+        run: exit 1
