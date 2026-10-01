@@ -1,0 +1,29 @@
+name: CI
+
+on:
+  push:
+    branches: [main, "arena/**"]
+  pull_request:
+
+jobs:
+  analyze-and-test:
+    name: flutter analyze + test
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: subosito/flutter-action@v2
+        with:
+          # Must satisfy pubspec: sdk >=3.4, flutter >=3.22
+          flutter-version: "3.24.5"
+          channel: stable
+          cache: true
+
+      - name: Fetch dependencies
+        run: flutter pub get
+
+      - name: Static analysis (errors + warnings are fatal)
+        run: flutter analyze
+
+      - name: Unit / widget / repository tests
+        run: flutter test --reporter compact

@@ -160,8 +160,10 @@ rendered colours are mapped through the palette.
 
 - The Supabase schema/RPC surface matches the contract documented by the web team; the app calls
   **only** those RPCs (see `test/repositories/rpc_param_names_test.dart` for the full list).
-- Brand crest is a **placeholder** (`assets/images/crest.png`). Drop the real crest there — same
-  filename — when available.
+- Brand crest is a **placeholder** (`assets/images/crest.png`), and the iOS launcher/launch
+  images are generated placeholder art in the brand palette. Drop the real crest at the same
+  filenames when available.
+- CI runs `flutter analyze` + `flutter test` on every push/PR (`.github/workflows/ci.yml`).
 - Demo accounts (`*@demo.isosha.invalid`) exist only for manual testing against `FakeBackend` and
   are never shipped as credentials.
 - Localization: English (en-ZA) only for v1; copy lives in `lib/core/l10n/strings.dart` with an
