@@ -6,7 +6,12 @@ coverage/
 .flutter-plugins
 .flutter-plugins-dependencies
 .metadata
-pubspec.lock
+# pubspec.lock is deliberately NOT ignored: this is an app (publish_to: none),
+# so every dev machine and CI must build the same resolved dependency set.
+# Un-resolved caret ranges are what let record_linux 0.7.2 drift in against
+# record_platform_interface 1.6.0 and break `flutter build apk` (see the
+# dependency_overrides note in pubspec.yaml). Commit the lock after any
+# `flutter pub get` / `flutter pub upgrade` that you have built successfully.
 
 # Generated
 *.g.dart

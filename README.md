@@ -22,6 +22,10 @@ the server returns.
 - Android: minSdk 24, compileSdk 36, AGP **9.1.0**, Gradle wrapper **9.3.1**, Kotlin (KGP) **2.4.0**
   — all pinned in-repo (`android/settings.gradle.kts`, `android/gradle/wrapper/gradle-wrapper.properties`)
 - iOS: Xcode 15+, run `pod install` inside `ios/` after checkout
+- **`pubspec.lock` is committed.** This is an app, so the resolved dependency set is part of the
+  build; re-resolving caret ranges is how the `record` plugin family broke the Android build
+  (see the dependency-drift note in §9). Commit the lock after any dependency change you have
+  built successfully.
 
 ## 2. Configuration (compile-time `--dart-define`)
 
@@ -180,6 +184,43 @@ version of 8.14.0. Please upgrade your Gradle version.
 Also note that Flutter 3.47 applies the Kotlin Gradle Plugin itself to modules that apply AGP
 without declaring KGP, so `android/app/build.gradle.kts` intentionally has no
 `id("kotlin-android")` — do not add it back, or AGP 9 will fail to apply it.
+
+### Dependency drift: `kernel_snapshot_program failed` on a plugin you don't target
+
+Symptom — the Gradle stage succeeds and the build then dies on a *desktop* platform package while
+you are building for Android:
+
+```
+../../AppData/Local/Pub/Cache/hosted/pub.dev/record_linux-0.7.2/lib/record_linux.dart:12:7: Error:
+The non-abstract class 'RecordLinux' is missing implementations for these members:
+ - RecordMethodChannelPlatformInterface.startStream
+Target kernel_snapshot_program failed: Exception
+```
+
+Cause: `record` is a **federated** plugin — one platform-interface package plus one package per
+platform (android / ios / macos / linux / windows / web). Flutter compiles *every* member of the
+family into the kernel snapshot, including the desktop ones, even for an Android-only build. If
+the family resolves to versions that don't agree with each other, the snapshot fails before any
+native code is compiled. `record: ^5.2.0` constrained `record_linux` to `^0.7.x`; the newest 0.7
+is 0.7.2 (2024-06-26) and predates the `startStream` / `hasPermission(request:)` members that
+`record_platform_interface` 1.4+ requires. So 5.x became unbuildable as soon as 1.6.0 was
+published, and there is no fix inside the 5.x range.
+
+Fix:
+
+1. `flutter clean`, delete `pubspec.lock`, `flutter pub get`.
+2. Keep the family pinned together — `record: 6.2.1` plus the `dependency_overrides` block in
+   `pubspec.yaml`, which freezes every member on a version that accepts
+   `record_platform_interface` 1.6.x. Move to `record` 7.x only when the project's Flutter floor
+   reaches 3.44 / Dart 3.12 — 7.x needs the whole family on 2.x.
+3. Commit `pubspec.lock`.
+
+The same failure shape can hit any federated plugin (`share_plus`, `url_launcher`,
+`image_picker`, `webview_flutter`, `just_audio`, …): the named package is one platform
+implementation of a family. Move the whole family — never patch around the single package that
+fails to compile. Note that CI cannot catch this class of failure: `flutter analyze` and
+`flutter test` don't compile federated plugin packages, which is why the committed lock file
+matters.
 
 ## 10. Assumptions
 
