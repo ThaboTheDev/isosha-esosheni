@@ -19,7 +19,10 @@ dependencies:
   supabase_flutter: ^2.8.0
   go_router: ^14.6.2
   flutter_riverpod: ^2.6.1
-  intl: 0.20.2
+  # Must stay compatible with the intl version flutter_localizations brings in:
+  # Flutter 3.44 pins intl 0.20.2, Flutter 3.47 pins ^0.20.3. An exact `0.20.2` pin
+  # therefore breaks `flutter pub get` on Flutter 3.47+ ("version solving failed").
+  intl: ^0.20.2
   cached_network_image: ^3.4.1
   image_picker: ^1.1.2
   record: ^5.2.0
