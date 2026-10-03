@@ -187,7 +187,8 @@ without declaring KGP, so `android/app/build.gradle.kts` intentionally has no
 - Brand crest is a **placeholder** (`assets/images/crest.png`), and the iOS launcher/launch
   images are generated placeholder art in the brand palette. Drop the real crest at the same
   filenames when available.
-- CI runs `flutter analyze` + `flutter test` on every push/PR (`.github/workflows/ci.yml`).
+- CI runs `flutter analyze` + `flutter test` on every push/PR (`.github/workflows/ci.yml`) on the
+  same Flutter version the Android toolchain is pinned to (3.47.x); it does not build the APK.
 - Demo accounts (`*@demo.isosha.invalid`) exist only for manual testing against `FakeBackend` and
   are never shipped as credentials.
 - Localization: English (en-ZA) only for v1; copy lives in `lib/core/l10n/strings.dart` with an
