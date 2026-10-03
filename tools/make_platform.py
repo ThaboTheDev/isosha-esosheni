@@ -15,16 +15,20 @@ from pathlib import Path
 TEMPLATES = Path("/tmp/fl/packages/flutter_tools/templates/app")
 ROOT = Path(__file__).resolve().parent.parent
 
+# These must match the Flutter SDK template the folders are generated from
+# (packages/flutter_tools/lib/src/android/gradle_utils.dart). The values below are the
+# Flutter 3.47 template defaults: AGP 9.1.0 + Gradle 9.3.1 + KGP 2.4.0. Flutter's
+# Gradle plugin rejects anything below Gradle 8.14.0 / AGP 8.11.1 / KGP 2.2.20.
 VALUES = {
     "projectName": "isosha_esosheni",
     "titleCaseProjectName": "Isosha Esosheni",
     "androidIdentifier": "com.trsh.isoshaesosheni",
     "iosIdentifier": "com.trsh.isoshaesosheni",
     "iosDevelopmentTeam": "",
-    "agpVersion": "8.9.1",
+    "agpVersion": "9.1.0",
     "androidSdkVersion": "36",
-    "gradleVersion": "8.11.1",
-    "kotlinVersion": "2.1.0",
+    "gradleVersion": "9.3.1",
+    "kotlinVersion": "2.4.0",
 }
 
 

@@ -613,7 +613,7 @@ class _StoryViewerState extends State<StoryViewer> {
                             horizontal: 2, vertical: 8),
                         color: i <= _index
                             ? Colors.white
-                            : Colors.white.withOpacity(0.35),
+                            : Colors.white.withValues(alpha: 0.35),
                       ),
                     ),
                 ],

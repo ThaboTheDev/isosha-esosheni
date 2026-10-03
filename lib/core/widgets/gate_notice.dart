@@ -77,7 +77,7 @@ class BronzeInfoPanel extends StatelessWidget {
         padding: const EdgeInsets.all(14),
         decoration: BoxDecoration(
           color: C.crimson100,
-          border: Border.all(color: C.crimson.withOpacity(0.35)),
+          border: Border.all(color: C.crimson.withValues(alpha: 0.35)),
           borderRadius: BorderRadius.circular(12),
         ),
         child: DefaultTextStyle(

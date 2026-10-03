@@ -27,7 +27,7 @@ class AnnouncementDialog extends StatelessWidget {
       context: context,
       barrierDismissible: true,
       barrierLabel: 'Dismiss announcement',
-      barrierColor: C.plum800.withOpacity(0.55),
+      barrierColor: C.plum800.withValues(alpha: 0.55),
       pageBuilder: (_, __, ___) => AnnouncementDialog(
         announcement: a,
         onDismiss: onDismiss,

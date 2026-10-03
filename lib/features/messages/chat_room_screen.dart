@@ -987,7 +987,7 @@ class _VoicePlayerState extends State<_VoicePlayer> {
           ),
         ),
         const SizedBox(width: 6),
-        Icon(Icons.graphic_eq, color: color.withOpacity(0.7), size: 18),
+        Icon(Icons.graphic_eq, color: color.withValues(alpha: 0.7), size: 18),
         const SizedBox(width: 6),
         Text(
           widget.seconds == null

@@ -383,7 +383,7 @@ class _PreferencesScreenState extends State<PreferencesScreen> {
             ],
           ),
           DropdownButtonFormField<String>(
-            value: _gender,
+            initialValue: _gender,
             items: const [
               DropdownMenuItem(value: 'female', child: Text('Female')),
               DropdownMenuItem(value: 'male', child: Text('Male')),

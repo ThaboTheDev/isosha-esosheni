@@ -133,7 +133,7 @@ class _ConnectionsScreenState extends State<ConnectionsScreen> {
                                 horizontal: 7, vertical: 2),
                             decoration: BoxDecoration(
                               color: _tab == t.$1
-                                  ? Colors.white.withOpacity(0.2)
+                                  ? Colors.white.withValues(alpha: 0.2)
                                   : C.plum100,
                               borderRadius: BorderRadius.circular(999),
                             ),

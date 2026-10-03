@@ -76,7 +76,7 @@ class WelcomeScreen extends StatelessWidget {
                         'moves at the pace both people choose, with Indawo '
                         'Ephakeme guidance before dating begins.',
                         style: TextStyle(
-                          color: Colors.white.withOpacity(0.85),
+                          color: Colors.white.withValues(alpha: 0.85),
                           fontSize: 14,
                           height: 1.6,
                         ),

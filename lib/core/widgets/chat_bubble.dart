@@ -117,7 +117,7 @@ class ChatBubble extends StatelessWidget {
                             horizontal: 6, vertical: 2),
                         decoration: BoxDecoration(
                           color: mine
-                              ? Colors.white.withOpacity(0.15)
+                              ? Colors.white.withValues(alpha: 0.15)
                               : C.plum50,
                           borderRadius: BorderRadius.circular(999),
                         ),

@@ -6,15 +6,17 @@ import 'package:flutter/painting.dart';
 class Contrast {
   Contrast._();
 
-  static double _lin(int v8) {
-    final c = v8 / 255.0;
+  /// Linearizes one non-linear sRGB channel (0.0-1.0), per WCAG 2.1.
+  static double _lin(double c) {
     return c <= 0.04045 ? c / 12.92 : math.pow((c + 0.055) / 1.055, 2.4).toDouble();
   }
 
   static double relativeLuminance(Color c) {
-    final r = _lin(c.red);
-    final g = _lin(c.green);
-    final b = _lin(c.blue);
+    // `.r/.g/.b` are the double-valued sRGB channels (0.0-1.0); the older
+    // `.red/.green/.blue` 8-bit getters are deprecated in Flutter 3.27+.
+    final r = _lin(c.r);
+    final g = _lin(c.g);
+    final b = _lin(c.b);
     return 0.2126 * r + 0.7152 * g + 0.0722 * b;
   }
 
