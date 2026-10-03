@@ -360,10 +360,6 @@ class _HouseholdScreenState extends State<HouseholdScreen> {
   }
 }
 
-extension on dynamic {
-  bool get isTrue => this == true;
-}
-
 class Stepper2 extends StatelessWidget {
   const Stepper2({super.key, required this.value, required this.onChanged});
   final int value;
