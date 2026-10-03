@@ -17,8 +17,9 @@ the server returns.
 
 ## 1. Requirements
 
-- Flutter **3.22+** (Dart **3.4+**)
-- Android: minSdk 24, compileSdk 36, AGP 8.9.1, Gradle wrapper 8.11.1 (both pinned in-repo)
+- Flutter **3.47+** for Android builds, JDK **17+** (Dart **3.4+** / Flutter 3.22+ for the Dart code itself)
+- Android: minSdk 24, compileSdk 36, AGP **9.1.0**, Gradle wrapper **9.3.1**, Kotlin (KGP) **2.4.0**
+  — all pinned in-repo (`android/settings.gradle.kts`, `android/gradle/wrapper/gradle-wrapper.properties`)
 - iOS: Xcode 15+, run `pod install` inside `ios/` after checkout
 
 ## 2. Configuration (compile-time `--dart-define`)
@@ -154,7 +155,30 @@ rendered colours are mapped through the palette.
 | Account deletion | See store-compliance note above. |
 | Administration | Staff see a single *"Administration is available on the web"* row that opens `WEB_BASE_URL/admin` in the system browser. Admin is intentionally not built in mobile. |
 | iOS Associated Domains | Must be added in Xcode before release builds. |
-| Gradle wrapper | The Android wrapper (`gradlew`, `gradlew.bat`, `gradle-wrapper.jar` for Gradle 8.11.1) is checked in; no extra setup needed. Gradle 8.11.1 is the **minimum** for AGP 8.9.1 — if a build fails with *"Minimum supported Gradle version is 8.11.1. Current version is 8.9"*, the wrapper was downgraded (Android Studio rewrites `gradle-wrapper.properties` when Gradle is set to run from a *specified location* — keep it on *"gradle-wrapper.properties (default)"*). Restore `distributionUrl` to `gradle-8.11.1-all.zip`, or re-pull. |
+| Gradle wrapper | The Android wrapper (`gradlew`, `gradlew.bat`, `gradle-wrapper.jar`) is checked in; no extra setup needed. It downloads Gradle 9.3.1 from `android/gradle/wrapper/gradle-wrapper.properties`. Android Studio rewrites that file when Gradle is set to run from a *specified location* — keep it on *"gradle-wrapper.properties (default)"*. See the troubleshooting note below. |
+
+### Android build failures (Gradle / AGP / Kotlin)
+
+The four version numbers that must stay in agreement are the Gradle wrapper, AGP, KGP (Kotlin)
+and the Flutter SDK. They are pinned in-repo as `9.3.1` / `9.1.0` / `2.4.0` — the values the
+**Flutter 3.47** Android template ships — and every Flutter release since 3.47 aborts the build
+before compiling anything if they are below `Gradle 8.14.0` / `AGP 8.11.1` / `KGP 2.2.20`:
+
+```
+Error: Your project's Gradle version (8.11.1) is lower than Flutter's minimum supported
+version of 8.14.0. Please upgrade your Gradle version.
+```
+
+| Symptom | Cause / fix |
+|---------|-------------|
+| *"Your project's Gradle version (x) is lower than Flutter's minimum supported version of 8.14.0"* | The Flutter SDK is newer than the in-repo pins. Upgrade the trio to the values the current Flutter template ships (`templateDefaultGradleVersion`, `templateAndroidGradlePluginVersion`, `templateKotlinGradlePluginVersion` in the SDK's `packages/flutter_tools/lib/src/android/gradle_utils.dart`) — for 3.47: Gradle 9.3.1, AGP 9.1.0, KGP 2.4.0. These are exactly the numbers in `android/settings.gradle.kts` + the wrapper properties. |
+| *"Minimum supported Gradle version is 9.3.1. Current version is …"* | `gradle-wrapper.properties` was downgraded (usually by Android Studio's *specified location* setting). Restore `distributionUrl` to `gradle-9.3.1-all.zip`. |
+| *"Starting AGP 9+, only the new DSL interface will be read"* / *"built-in Kotlin"* messages | `android.newDsl=false` and `android.builtInKotlin=false` in `android/gradle.properties` keep AGP 9 on the legacy DSL + legacy KGP path. They are required until every plugin in the dependency tree has migrated — do not delete them. |
+| Build must run on an older Flutter (< 3.47) | Temporarily lower the trio to the last pre-AGP-9 line: Gradle **8.14.3** + AGP **8.13.2** + KGP **2.2.20** or newer (above Flutter 3.47's error floors, so it builds with deprecation warnings instead). |
+
+Also note that Flutter 3.47 applies the Kotlin Gradle Plugin itself to modules that apply AGP
+without declaring KGP, so `android/app/build.gradle.kts` intentionally has no
+`id("kotlin-android")` — do not add it back, or AGP 9 will fail to apply it.
 
 ## 10. Assumptions
 

@@ -46,3 +46,7 @@ android/key.properties
 .env
 .env.*
 !.env.example
+
+# Python
+__pycache__/
+*.pyc
