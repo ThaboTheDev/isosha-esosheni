@@ -525,7 +525,7 @@ class _FilterSheetState extends State<_FilterSheet> {
     return Padding(
       padding: const EdgeInsets.only(bottom: 10),
       child: DropdownButtonFormField<T>(
-        value: value,
+        initialValue: value,
         items: [
           const DropdownMenuItem(value: null, child: Text('Any')),
           for (final v in values)

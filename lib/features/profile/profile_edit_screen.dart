@@ -302,7 +302,7 @@ class _ProfileEditScreenState extends ConsumerState<ProfileEditScreen> {
             )
           else
             DropdownButtonFormField<String>(
-              value: _marital,
+              initialValue: _marital,
               items: [
                 const DropdownMenuItem(value: null, child: Text('Select')),
                 for (final s in selfMaritalStatuses)
@@ -338,7 +338,7 @@ class _ProfileEditScreenState extends ConsumerState<ProfileEditScreen> {
             ],
           ),
           DropdownButtonFormField<String>(
-            value: _wantsChildren,
+            initialValue: _wantsChildren,
             items: [
               const DropdownMenuItem(value: null, child: Text('Select')),
               for (final w in wantsChildrenOptions)
@@ -366,7 +366,7 @@ class _ProfileEditScreenState extends ConsumerState<ProfileEditScreen> {
           const SizedBox(height: 16),
           _section('Education and work'),
           DropdownButtonFormField<String>(
-            value: me?.education,
+            initialValue: me?.education,
             items: [
               const DropdownMenuItem(value: null, child: Text('Select')),
               for (final e in educationOptions)
@@ -377,7 +377,7 @@ class _ProfileEditScreenState extends ConsumerState<ProfileEditScreen> {
           ),
           const SizedBox(height: 10),
           DropdownButtonFormField<String>(
-            value: me?.employmentStatus,
+            initialValue: me?.employmentStatus,
             items: [
               const DropdownMenuItem(value: null, child: Text('Select')),
               for (final e in employmentOptions)
@@ -447,7 +447,7 @@ class _ProfileEditScreenState extends ConsumerState<ProfileEditScreen> {
           ),
           const SizedBox(height: 10),
           DropdownButtonFormField<String>(
-            value: me?.province,
+            initialValue: me?.province,
             items: [
               const DropdownMenuItem(value: null, child: Text('Select')),
               for (final p in provinces)

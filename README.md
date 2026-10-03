@@ -17,7 +17,8 @@ the server returns.
 
 ## 1. Requirements
 
-- Flutter **3.47+** for Android builds, JDK **17+** (Dart **3.4+** / Flutter 3.22+ for the Dart code itself)
+- Flutter **3.47+** for Android builds (the Android toolchain pins come from the 3.47 template),
+  Flutter **3.32+** otherwise, JDK **17+** for Android builds (Dart **3.4+**)
 - Android: minSdk 24, compileSdk 36, AGP **9.1.0**, Gradle wrapper **9.3.1**, Kotlin (KGP) **2.4.0**
   — all pinned in-repo (`android/settings.gradle.kts`, `android/gradle/wrapper/gradle-wrapper.properties`)
 - iOS: Xcode 15+, run `pod install` inside `ios/` after checkout

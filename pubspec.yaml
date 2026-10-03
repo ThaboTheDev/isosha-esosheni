@@ -8,7 +8,10 @@ version: 1.0.0+1
 
 environment:
   sdk: ">=3.4.0 <4.0.0"
-  flutter: ">=3.22.0"
+  # Flutter 3.32 is the oldest SDK whose flutter_localizations accepts intl 0.20.2
+  # (3.27-3.29 pin intl 0.19.0; 3.32-3.44 pin 0.20.2; 3.47 pins ^0.20.3).
+  # Android builds additionally need Flutter 3.47+ - see README "Requirements".
+  flutter: ">=3.32.0"
 
 dependencies:
   flutter:

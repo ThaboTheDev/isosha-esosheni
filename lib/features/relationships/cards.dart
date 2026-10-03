@@ -122,7 +122,7 @@ class _RelationshipCardState extends State<RelationshipCard> {
                   ),
                   const SizedBox(height: 10),
                   DropdownButtonFormField<String>(
-                    value: marriageType,
+                    initialValue: marriageType,
                     items: [
                       for (final e in marriageTypes.entries)
                         DropdownMenuItem(value: e.key, child: Text(e.value)),
@@ -392,7 +392,7 @@ class _ConsultationCardState extends State<ConsultationCard> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               DropdownButtonFormField<String>(
-                value: mode,
+                initialValue: mode,
                 items: const [
                   DropdownMenuItem(value: 'in_person', child: Text('In person')),
                   DropdownMenuItem(value: 'video', child: Text('Video call')),
@@ -452,7 +452,7 @@ class _ConsultationCardState extends State<ConsultationCard> {
     return Container(
       decoration: BoxDecoration(
         color: C.crimson100,
-        border: Border.all(color: C.crimson.withOpacity(0.4)),
+        border: Border.all(color: C.crimson.withValues(alpha: 0.4)),
         borderRadius: BorderRadius.circular(14),
       ),
       padding: const EdgeInsets.all(14),
@@ -465,7 +465,7 @@ class _ConsultationCardState extends State<ConsultationCard> {
           Text(
             'Spiritual consultation before dating. Compulsory, and walked '
             'together.',
-            style: TextStyle(fontSize: 12.5, color: C.crimson600.withOpacity(0.85)),
+            style: TextStyle(fontSize: 12.5, color: C.crimson600.withValues(alpha: 0.85)),
           ),
           const SizedBox(height: 10),
           if (_error != null) Text(_error!, style: const TextStyle(fontSize: 13)),
