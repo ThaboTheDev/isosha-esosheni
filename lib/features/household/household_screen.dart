@@ -96,7 +96,10 @@ class _HouseholdScreenState extends State<HouseholdScreen> {
 
   Widget _body() {
     final d = _data!;
-    if (d.household == null && !d.eligibility['eligible'].isTrue) {
+    // `eligibility['eligible']` is dynamic, and extension members never apply to a
+    // dynamic receiver (such a call is dispatched dynamically and throws at
+    // runtime), so compare explicitly instead of using an `isTrue` helper.
+    if (d.household == null && d.eligibility['eligible'] != true) {
       return ListView(
         padding: const EdgeInsets.all(16),
         children: [
